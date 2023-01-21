@@ -21,7 +21,7 @@ function getSatelliteData() {
 getSatelliteData();
 
 // Comments
-const satelliteRoute = require("./routes/satellite");
+const satelliteRoute = require("./satellite");
 app.use("/api/satellite", satelliteRoute);
 
 app.listen(port, () => {

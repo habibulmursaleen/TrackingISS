@@ -1,70 +1,68 @@
-const express = require("express"); //Used Node ExpressJS for Backend
-const app = express(); //Express initialisation
-const { Client } = require("pg"); //Postgres client
+const express = require("express");
+const bodyParser = require("body-parser"); //Express middleware
 const axios = require("axios"); //For fetch API data
-const port = 8000;
+const Pool = require("pg").Pool; //For postgres connection
+const app = express(); //Express.js framework
+const port = 8000; //Backend port
+const dotenv = require("dotenv").config(); //For .env
 
-app.use(express.json());
-
-// const client = new Client({
-//   username: process.env.DATABASE_USERNAME,
-//   host: process.env.DATABASE_HOSTNAME,
-//   database: process.env.DATABASE_NAME,
-//   password: process.env.DATABASE_PASSWORD,
-//   port: process.env.DATABASE_PORT,
-// });
-// client.connect(); //postgres connection
-
-const client = new Client({
-  connectionString: "postgres://postgres:password@localhost:5432/ISSSatellite",
+//Database Connection
+const pool = new Pool({
+  username: process.env.DATABASE_USERNAME,
+  host: process.env.DATABASE_HOSTNAME,
+  database: process.env.DATABASE_NAME,
+  password: process.env.DATABASE_PASSWORD,
+  port: process.env.DATABASE_PORT,
 });
-client.connect();
 
+// const pool = new Pool({
+//   user: "postgres",
+//   host: "localhost",
+//   database: "ISSSatellite",
+//   password: "password",
+//   port: 5432,
+// });
+
+//Parsing JSON and Raw data
+app.use(bodyParser.json());
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
+
+//Port for Backend - 8000
+app.listen(port, () => {
+  console.log(`App running on port ${port}.`);
+});
+
+//Home endpoint
+app.get("/", (request, response) => {
+  response.json({ info: "Node.js, Express, and Postgres API" });
+});
+
+//Position endpoint
 app.get("/positions", async (req, res) => {
-  // data is the response object
+  // data is the response in object
   const data = await axios.get(
     "https://api.wheretheiss.at/v1/satellites/25544"
   );
+  console.log("Start");
   console.log(data.data);
+  console.log("End");
+
   const apiData = data.data; // can access the json data using data.data
-  (client.query = `INSERT INTO iss(id, lat, lng, speed, timestamp, units) VALUES ($25544, $-40.923492357944, $49.076800881401, $27564.237393681, $1674266621, $"kilometers")`),
-    [
-      apiData.id,
-      apiData.lat,
-      apiData.lng,
-      apiData.speed,
-      apiData.timestamp,
-      apiData.units,
-    ],
-    (err, res) => {
-      if (err) {
-        console.log(err);
+
+  pool.query(
+    //Inserting the api data into iss table in postgress
+    "INSERT INTO iss (lat, lng, speed, units) VALUES ($1, $2, $3, $4) RETURNING *",
+    [apiData.latitude, apiData.longitude, apiData.velocity, apiData.units],
+    (error, results) => {
+      if (error) {
+        console.log(error);
         res.status(500).json({ error: "Failed to insert data" });
-      } else {
-        // Return data to client
-        client.query("SELECT * FROM iss", (err, res) => {
-          if (err) {
-            console.log(err);
-            res.status(500).json({ error: "Failed to retrieve data" });
-          } else {
-            res.json(res.rows);
-          }
-        });
       }
-    };
-});
-
-app.get("/data", (req, res) => {
-  client.query("SELECT * FROM iss", (err, res) => {
-    if (err) {
-      console.log(err);
-      res.status(500).json({ error: "Failed to retrieve data" });
-    } else {
-      res.json(res.rows);
+      res.status(201).send(`User added with ID: ${results.rows[0].id}`);
     }
-  });
-});
-
-app.listen(port, () => {
-  console.log(`ISS Tracking app listening on port ${port}`);
+  );
 });
