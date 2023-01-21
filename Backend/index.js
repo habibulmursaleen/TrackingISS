@@ -6,16 +6,21 @@ const port = 8000;
 
 app.use(express.json());
 
-const client = new Client({
-  user: "postgres",
-  host: "localhost",
-  database: "ISSSatellite",
-  password: "password",
-  port: 5432,
-});
-client.connect(); //postgres connection
+// const client = new Client({
+//   username: process.env.DATABASE_USERNAME,
+//   host: process.env.DATABASE_HOSTNAME,
+//   database: process.env.DATABASE_NAME,
+//   password: process.env.DATABASE_PASSWORD,
+//   port: process.env.DATABASE_PORT,
+// });
+// client.connect(); //postgres connection
 
-app.get("/position", async (req, res) => {
+const client = new Client({
+  connectionString: "postgres://postgres:password@localhost:5432/ISSSatellite",
+});
+client.connect();
+
+app.get("/positions", async (req, res) => {
   // data is the response object
   const data = await axios.get(
     "https://api.wheretheiss.at/v1/satellites/25544"
@@ -42,11 +47,22 @@ app.get("/position", async (req, res) => {
             console.log(err);
             res.status(500).json({ error: "Failed to retrieve data" });
           } else {
-            res.json(result.rows);
+            res.json(res.rows);
           }
         });
       }
     };
+});
+
+app.get("/data", (req, res) => {
+  client.query("SELECT * FROM iss", (err, res) => {
+    if (err) {
+      console.log(err);
+      res.status(500).json({ error: "Failed to retrieve data" });
+    } else {
+      res.json(res.rows);
+    }
+  });
 });
 
 app.listen(port, () => {

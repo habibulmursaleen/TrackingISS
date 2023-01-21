@@ -4,7 +4,8 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import marker from "../assets/marker.png";
 import { positions } from "../assets/PositionData";
 
@@ -16,10 +17,29 @@ const containerStyle = {
 const Maps = () => {
   const [selected, setSelected] = useState(null);
 
+  const [data, setData] = useState([]);
+
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
   });
+
+  useEffect(() => {
+    function fetchDataFunc() {
+      axios
+        .get("http://localhost:8000/positions")
+        .then((response) => setData(response.data))
+        .then((data) => console.log(data));
+    }
+
+    console.log(data);
+
+    // Fetching data in every 5 secs after server starts
+    function getSatelliteData() {
+      setInterval(fetchDataFunc, 5000);
+    }
+    getSatelliteData();
+  }, []);
 
   return isLoaded ? (
     <GoogleMap
@@ -55,8 +75,11 @@ const Maps = () => {
           }}
         >
           <div>
-            <h4>{positions[0].lon}</h4>
-            <h4>{positions[0].lat}</h4>
+            <h4>
+              `Lon: ${positions[0].lon} and Lat: ${positions[0].lat}`
+            </h4>
+            <p>Speed is ${}/kmh</p>
+            <p>Time: </p>
           </div>
         </InfoWindow>
       )}
