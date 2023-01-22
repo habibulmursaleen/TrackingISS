@@ -4,8 +4,9 @@ const axios = require("axios"); //For fetch API data
 const Pool = require("pg").Pool; //For postgres connection
 const app = express(); //Express.js framework
 const port = 8000; //Backend port
-const dotenv = require("dotenv").config(); //For .env
 const cors = require("cors"); //to connect with frontend
+const dotenv = require("dotenv"); //For .env
+dotenv.config();
 
 //Database Connection
 // const pool = new Pool({
