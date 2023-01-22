@@ -67,6 +67,6 @@ $ npm start
 
 Frontend listens to the port 3000
 
-### deployed-version
+### Deployed Version
 
 Deployed version of the application can be found at this link -
