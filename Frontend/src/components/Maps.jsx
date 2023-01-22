@@ -4,10 +4,9 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
-// import axios from "axios";
-import React, { useState } from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import marker from "../assets/marker.png";
-import { positions } from "../assets/PositionData";
 
 const containerStyle = {
   width: "100vw",
@@ -16,37 +15,39 @@ const containerStyle = {
 
 const Maps = () => {
   const [selected, setSelected] = useState(null);
-
-  // const [positions, setPositions] = useState([]);
-  // const [data, setData] = useState([]);
+  const [show, setShow] = useState(false);
+  const [positions, setPositions] = useState([]);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
   });
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const result = await axios.get("http://localhost:8000/data");
-  //     setPositions(result.data);
-  //     console.log(result.data);
-  //   };
-  //   // fetchData();
-  //   const timer = setInterval(fetchData, 10000); //will fetch data in every 5 sec
-  //   return () => clearInterval(timer); //clearing the interval so that it does not repeat
-  // }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await axios.get("http://localhost:8000/api/data");
+      setPositions(result.data);
+      !show && setShow(true);
+    };
+    fetchData();
+    const timer = setInterval(fetchData, 5000); //will fetch data in every 5 sec
+    return () => clearInterval(timer); //clearing the interval so that it does not repeat
+  }, [show]);
 
-  return isLoaded ? (
+  return isLoaded && show ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
-      center={positions[0]}
-      zoom={3}
+      center={{
+        lat: parseFloat(positions[positions.length - 1].lat),
+        lng: parseFloat(positions[positions.length - 1].lng),
+      }}
+      zoom={6}
     >
       {positions.map((position) => (
         <Marker
           position={{
-            lat: position.lat,
-            lng: position.lng,
+            lat: parseFloat(position.lat),
+            lng: parseFloat(position.lng),
           }}
           onClick={() => {
             setSelected(position);
@@ -66,8 +67,8 @@ const Maps = () => {
             setSelected(null);
           }}
           position={{
-            lat: selected.lat,
-            lng: selected.lng,
+            lat: parseFloat(selected.lat),
+            lng: parseFloat(selected.lng),
           }}
         >
           <div>
@@ -81,7 +82,7 @@ const Maps = () => {
       )}
     </GoogleMap>
   ) : (
-    <>Nothing Loaded</>
+    <> Loading.. </>
   );
 };
 
