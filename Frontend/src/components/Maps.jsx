@@ -17,6 +17,7 @@ const containerStyle = {
 const Maps = () => {
   const [selected, setSelected] = useState(null);
 
+  // const [positions, setPositions] = useState([]);
   const [data, setData] = useState([]);
 
   const { isLoaded } = useJsApiLoader({
@@ -25,20 +26,14 @@ const Maps = () => {
   });
 
   useEffect(() => {
-    function fetchDataFunc() {
-      axios
-        .get("http://localhost:8000/positions")
-        .then((response) => setData(response.data))
-        .then((data) => console.log(data));
-    }
-
-    console.log(data);
-
-    // Fetching data in every 5 secs after server starts
-    function getSatelliteData() {
-      setInterval(fetchDataFunc, 5000);
-    }
-    getSatelliteData();
+    const fetchData = async () => {
+      const result = await axios.get("http://localhost:8000/data");
+      setData(result.data);
+      console.log(result.data);
+    };
+    // fetchData();
+    const timer = setInterval(fetchData, 30000); //will fetch data in every 5 sec
+    return () => clearInterval(timer); //clearing the interval so that it does not repeat
   }, []);
 
   return isLoaded ? (
@@ -60,7 +55,7 @@ const Maps = () => {
             url: marker,
             scaledSize: new window.google.maps.Size(40, 40),
           }}
-          key={position.lat}
+          key={position.id}
         />
       ))}
 
@@ -76,10 +71,10 @@ const Maps = () => {
         >
           <div>
             <h4>
-              `Lon: ${positions[0].lon} and Lat: ${positions[0].lat}`
+              Lon: ${positions[0].lon} and Lat: ${positions[0].lat}
             </h4>
-            <p>Speed is ${}/kmh</p>
-            <p>Time: </p>
+            <p>Speed is ${positions[0].speed}/kmh</p>
+            <p>Time:${positions[0].timestamp} </p>
           </div>
         </InfoWindow>
       )}
