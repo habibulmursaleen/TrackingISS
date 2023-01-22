@@ -1,13 +1,5 @@
 # TrackingISSAPP
 
-## Frontend
-
-### Technologies
-
-## Frontend
-
-### Technologies
-
 ## Table of contents
 
 - [General info](#general-info)
