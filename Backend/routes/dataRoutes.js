@@ -4,7 +4,7 @@ const Pool = require("pg").Pool; //For postgres connection
 const dotenv = require("dotenv"); //For .env
 dotenv.config();
 
-// Database Connection
+// Database Connection, coming from .env file
 const pool = new Pool({
   user: process.env.DATABASE_USERNAME,
   host: process.env.DATABASE_HOSTNAME,
@@ -39,7 +39,7 @@ router.get("/data", async (req, res) => {
         console.log(error);
         res.status(500).json({ error: "Failed to insert data" });
       } else {
-        //getting the api data into iss table in postgress
+        //getting the api data from iss table in postgress
         const data = pool.query("SELECT * FROM iss", (error, results) => {
           if (error) {
             console.log(error);
