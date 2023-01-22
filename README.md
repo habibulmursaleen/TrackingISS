@@ -22,18 +22,24 @@ Project is created with:
 
 To run this project, install it locally using npm:
 
-### FrontendSetup
+### Frontend Setup
+
+Create a ".env" file inside Frontend folder and add your goole api key
 
 ```
-$ cd ../Frontend
+REACT_APP_GOOGLE_API_KEY="[Your_API_Key]"
+```
+
+```
+$ cd Frontend
 $ npm install
 $ npm start
 ```
 
-### BackendSetup
+### Backend Setup
 
 ```
-$ cd ../Backend
+$ cd Backend
 $ npm install
 $ node index.js
 ```
