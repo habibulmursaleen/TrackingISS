@@ -4,8 +4,8 @@ import {
   Marker,
   useJsApiLoader,
 } from "@react-google-maps/api";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+// import axios from "axios";
+import React, { useState } from "react";
 import marker from "../assets/marker.png";
 import { positions } from "../assets/PositionData";
 
@@ -18,29 +18,29 @@ const Maps = () => {
   const [selected, setSelected] = useState(null);
 
   // const [positions, setPositions] = useState([]);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState([]);
 
   const { isLoaded } = useJsApiLoader({
     id: "google-map-script",
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY,
   });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get("http://localhost:8000/data");
-      setData(result.data);
-      console.log(result.data);
-    };
-    // fetchData();
-    const timer = setInterval(fetchData, 30000); //will fetch data in every 5 sec
-    return () => clearInterval(timer); //clearing the interval so that it does not repeat
-  }, []);
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const result = await axios.get("http://localhost:8000/data");
+  //     setPositions(result.data);
+  //     console.log(result.data);
+  //   };
+  //   // fetchData();
+  //   const timer = setInterval(fetchData, 10000); //will fetch data in every 5 sec
+  //   return () => clearInterval(timer); //clearing the interval so that it does not repeat
+  // }, []);
 
   return isLoaded ? (
     <GoogleMap
       mapContainerStyle={containerStyle}
       center={positions[0]}
-      zoom={10}
+      zoom={3}
     >
       {positions.map((position) => (
         <Marker
@@ -49,7 +49,8 @@ const Maps = () => {
             lng: position.lng,
           }}
           onClick={() => {
-            setSelected(positions[0]);
+            setSelected(position);
+            console.log(selected);
           }}
           icon={{
             url: marker,
@@ -65,16 +66,16 @@ const Maps = () => {
             setSelected(null);
           }}
           position={{
-            lat: positions[0].lat,
-            lng: positions[0].lng,
+            lat: selected.lat,
+            lng: selected.lng,
           }}
         >
           <div>
-            <h4>
-              Lon: ${positions[0].lon} and Lat: ${positions[0].lat}
-            </h4>
-            <p>Speed is ${positions[0].speed}/kmh</p>
-            <p>Time:${positions[0].timestamp} </p>
+            <h1>ISS position details</h1>
+            <p>Lat: {selected.lat}</p>
+            <p>Lng: {selected.lng}</p>
+            <p>Speed is {selected.speed}/kmh</p>
+            <p>Time:{selected.timestamp} </p>
           </div>
         </InfoWindow>
       )}
