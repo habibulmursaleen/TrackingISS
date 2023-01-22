@@ -46,6 +46,8 @@ $ npm install
 $ node index.js
 ```
 
+Backend listens to the port 8000
+
 ### Frontend Setup
 
 Create a ".env" file inside Frontend folder and add your goole api key
@@ -61,3 +63,5 @@ $ cd Frontend
 $ npm install
 $ npm start
 ```
+
+Frontend listens to the port 3000
