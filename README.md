@@ -16,7 +16,7 @@ This project is to create a small app that is tracking the position of the Inter
 Project is created with:
 
 - ReactJS
-- NodeJS
+- NodeJS (Express.js)
 - Postgresql
 
 ### Setup
