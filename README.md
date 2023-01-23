@@ -25,7 +25,8 @@ To run this project locally, these steps should be followed:
 
 #### Postgres Database Setup
 
-Create a postgres database in your localhost and add a table(iss) with (id (integer), lat(numeric), lng(numeric), speed(numeric), timestamp(time with zone), units(cheracter varying)) as column name and data type. \\
+Create a postgres database in your localhost and add a table(iss) with (id (integer), lat(numeric), lng(numeric), speed(numeric), timestamp(time with zone), units(cheracter varying)) as column name and data type.
+
 Create a `.env` file inside Backend folder, then add your Postgres Database informations
 
 ```
