@@ -21,7 +21,7 @@ Project is created with:
 
 ### Setup
 
-To run this project, install it locally using npm:
+To run this project, these steps should be followed:
 
 #### Postgres Database Setup
 
