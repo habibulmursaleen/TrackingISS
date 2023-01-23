@@ -40,17 +40,17 @@ DATABASE_USERNAME ="[USERNAME]"
 
 ##### In terminal
 
+Backend listens to the port 8000
+
 ```
 $ cd Backend
 $ npm install
 $ node index.js
 ```
 
-Backend listens to the port 8000
-
 #### Frontend Setup
 
-Create a ".env" file inside Frontend folder and add your goole api key
+Create a `.env` file inside Frontend folder and add your goole api key
 
 ```
 REACT_APP_GOOGLE_API_KEY="[Your_API_Key]"
