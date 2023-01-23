@@ -25,11 +25,8 @@ To run this project, these steps should be followed:
 
 #### Postgres Database Setup
 
-Create a postgres database in your localhost and add a table with (id (integer), lat(numeric), lng(numeric), speed(numeric), timestamp(time with zone), units(cheracter varying)) as column name and data type.
-
-#### Backend Setup
-
-Create a ".env" file inside Backend folder and add your Postgres Database informations
+Create a postgres database in your localhost and add a table(iss) with (id (integer), lat(numeric), lng(numeric), speed(numeric), timestamp(time with zone), units(cheracter varying)) as column name and data type.
+Create a `.env` file inside Backend folder, then add your Postgres Database informations
 
 ```
 DATABASE_HOSTNAME ="[HOST]"
@@ -38,6 +35,8 @@ DATABASE_PASSWORD ="[PASSWORD]"
 DATABASE_NAME ="[DB_NAME]"
 DATABASE_USERNAME ="[USERNAME]"
 ```
+
+#### Backend Setup
 
 ##### In terminal
 
