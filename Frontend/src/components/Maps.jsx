@@ -26,9 +26,7 @@ const Maps = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get(
-        "http://dpg-cf3jge1a6gdmd1go721g-a/api/data"
-      ); //fetching the data what was saved in postgresDB using backend api
+      const result = await axios.get("http://localhost:8000/api/data"); //fetching the data what was saved in postgresDB using backend api
       setPositions(result.data); //setting the result into positions
       !show && setShow(true); //will show when the data is available
     };
