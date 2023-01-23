@@ -9,7 +9,7 @@
 
 ### General info
 
-This project is to create a small app that is tracking the position of the International Space Station in Google maps or similar.
+This project is to create a small app that is tracking the position of the International Space Station in Google maps or similar. This application pulls data from the ISS API, saves the data into postgres database, and then visualizes the position of the ISS on a map.
 
 ### Technologies
 
