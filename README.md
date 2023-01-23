@@ -21,7 +21,7 @@ Project is created with:
 
 ### Setup
 
-To run this project, these steps should be followed:
+To run this project locally, these steps should be followed:
 
 #### Postgres Database Setup
 
