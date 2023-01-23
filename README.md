@@ -39,9 +39,9 @@ DATABASE_USERNAME ="[USERNAME]"
 
 #### Backend Setup
 
-##### In terminal
-
 Backend listens to the port 8000
+
+##### In terminal
 
 ```
 $ cd Backend
