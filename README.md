@@ -53,11 +53,11 @@ $ node index.js
 
 Create a `.env` file inside Frontend folder and add your goole api key
 
-Frontend listens to the port `3000`
-
 ```
 REACT_APP_GOOGLE_API_KEY="[Your_API_Key]"
 ```
+
+Frontend listens to the port `3000`
 
 ##### In terminal
 
