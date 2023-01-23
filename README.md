@@ -1,4 +1,4 @@
-# TrackingISSAPP
+# Tracking International Space Station Application
 
 ## Table of contents
 
