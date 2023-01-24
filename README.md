@@ -51,6 +51,8 @@ $ node index.js
 
 #### Frontend Setup
 
+Add `http://localhost:8000/api/data` to your Client side.
+
 Create a `.env` file inside Client folder and add your goole api key
 
 ```
@@ -69,4 +71,4 @@ $ npm start
 
 ### Deployed Version
 
-Deployed version of the application can be found at this link -
+Deployed version of the application can be found at this link - `https://trackingiss.netlify.app`
