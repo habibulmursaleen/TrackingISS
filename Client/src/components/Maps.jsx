@@ -26,7 +26,9 @@ const Maps = () => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get("http://localhost:8000/api/data"); //fetching the data what was saved in postgresDB using backend api
+      const result = await axios.get(
+        "https://tracking-iss.onrender.com/api/data"
+      ); //fetching the data what was saved in postgresDB using backend api on render.com
       setPositions(result.data); //setting the result into positions
       !show && setShow(true); //will show when the data is available
     };
