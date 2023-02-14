@@ -25,11 +25,26 @@ const Maps = () => {
           mapContainerStyle={containerStyle}
           //will center the map according to last position
           center={{
-            lat: parseFloat(positions[positions.length - 1].lat),
-            lng: parseFloat(positions[positions.length - 1].lng),
+            lat: parseFloat(positions[0].lat),
+            lng: parseFloat(positions[0].lng),
           }}
           zoom={5}
         >
+          {/* for markers */}
+          <Marker
+            position={{
+              lat: parseFloat(positions[positions.length - 1].lat),
+              lng: parseFloat(positions[positions.length - 1].lng),
+            }}
+            onClick={() => {
+              setSelected(positions[positions.length - 1]);
+            }}
+            icon={{
+              url: marker, //getting a custom marker for iss
+              scaledSize: new window.google.maps.Size(40, 40),
+            }}
+          />
+
           {/* For continuous line */}
           <Polyline
             path={[
@@ -50,21 +65,6 @@ const Maps = () => {
               strokeWeight: 3,
               geodesic: true,
               clickable: false,
-            }}
-          />
-
-          {/* for markers */}
-          <Marker
-            position={{
-              lat: parseFloat(positions[positions.length - 1].lat),
-              lng: parseFloat(positions[positions.length - 1].lng),
-            }}
-            onClick={() => {
-              setSelected(positions[positions.length - 1]);
-            }}
-            icon={{
-              url: marker, //getting a custom marker for iss
-              scaledSize: new window.google.maps.Size(40, 40),
             }}
           />
 

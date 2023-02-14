@@ -42,7 +42,7 @@ router.get("/data", async (req, res) => {
       } else {
         //getting the api data from iss table in postgress
         const data = pool.query(
-          "SELECT * FROM iss ORDER BY timestamp DESC LIMIT 10",
+          "SELECT * FROM iss ORDER BY timestamp DESC LIMIT 1",
           (error, results) => {
             if (error) {
               console.log(error);
