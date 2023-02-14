@@ -1,6 +1,27 @@
+.Container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: antiquewhite;
+  border-radius: 10px;
+  padding-top: 2%;
+}
+
 .mapContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+}
+
+h1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 65rem;
+  height: 7rem;
+  background-color: green;
+  border-radius: 10px;
+  text-align: center;
+  color: antiquewhite;
 }
