@@ -48,15 +48,15 @@ const Maps = () => {
           {/* For continuous line */}
           <Polyline
             path={[
-              // origin - first item of the useState hook (positions array)
-              {
-                lat: parseFloat(positions[0].lat),
-                lng: parseFloat(positions[0].lng),
-              },
               // destination - last item of the useState hook (positions array)
               {
                 lat: parseFloat(positions[positions.length - 1].lat),
                 lng: parseFloat(positions[positions.length - 1].lng),
+              },
+              // origin - first item of the useState hook (positions array)
+              {
+                lat: parseFloat(positions[0].lat),
+                lng: parseFloat(positions[0].lng),
               },
             ]}
             options={{
