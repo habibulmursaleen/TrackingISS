@@ -1,12 +1,12 @@
 import React from "react";
+import Loading from "./components/Loading";
 import Maps from "./components/Maps";
+import { useStateContext } from "./context/ContextProvider";
 
 function App() {
-  return (
-    <div>
-      <Maps />
-    </div>
-  );
+  const { isLoaded, show } = useStateContext();
+
+  return isLoaded && show ? <Maps /> : <Loading />;
 }
 
 export default App;

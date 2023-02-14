@@ -1,94 +1,75 @@
-import {
-  GoogleMap,
-  InfoWindow,
-  Marker,
-  useJsApiLoader,
-} from "@react-google-maps/api";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { GoogleMap, Marker, Polyline } from "@react-google-maps/api";
+import React from "react";
+
+//interner imports
+import classes from "../Styles/Styles.module.css";
 import marker from "../assets/marker.png";
+import { useStateContext } from "../context/ContextProvider";
+import InfoWindows from "./InfoWindows";
 
 //style for google map
 const containerStyle = {
-  width: "100vw",
-  height: "100vh",
+  width: "80rem",
+  height: "50rem",
+  "border-radius": "15px",
 };
 
 const Maps = () => {
-  const [selected, setSelected] = useState(null); //to handle selected item
-  const [show, setShow] = useState(false);
-  const [positions, setPositions] = useState([]); //for the position data
+  const { positions, setSelected, selected } = useStateContext();
 
-  const { isLoaded } = useJsApiLoader({
-    id: "google-map-script",
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_API_KEY, //google api from .env file
-  });
+  return (
+    <div className={classes.mapContainer}>
+      <GoogleMap
+        mapContainerStyle={containerStyle}
+        //will center the map according to last position
+        center={{
+          lat: parseFloat(positions[positions.length - 1].lat),
+          lng: parseFloat(positions[positions.length - 1].lng),
+        }}
+        zoom={5}
+      >
+        {/* For continuous line */}
+        <Polyline
+          path={[
+            // origin - first element of the useState hook (positions array)
+            {
+              lat: parseFloat(positions[0].lat),
+              lng: parseFloat(positions[0].lng),
+            },
+            // destination - last element of the useState hook (positions array)
+            {
+              lat: parseFloat(positions[positions.length - 1].lat),
+              lng: parseFloat(positions[positions.length - 1].lng),
+            },
+          ]}
+          options={{
+            strokeColor: "#FFF",
+            strokeOpacity: 1,
+            strokeWeight: 3,
+            geodesic: true,
+            clickable: false,
+          }}
+        />
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios.get(
-        "https://tracking-iss.onrender.com/api/data"
-      ); //fetching the data what was saved in postgresDB using backend api on render.com
-      setPositions(result.data); //setting the result into positions
-      !show && setShow(true); //will show when the data is available
-    };
-    fetchData();
-    const timer = setInterval(fetchData, 5000); //will fetch data in every 5 sec
-    return () => clearInterval(timer); //clearing the interval so that it does not repeat
-  }, [show]);
-
-  return isLoaded && show ? (
-    <GoogleMap
-      mapContainerStyle={containerStyle}
-      //will center the map according to last position
-      center={{
-        lat: parseFloat(positions[positions.length - 1].lat),
-        lng: parseFloat(positions[positions.length - 1].lng),
-      }}
-      zoom={6}
-    >
-      {/* Mapping through the positions data */}
-      {positions.map((position) => (
+        {/* for markers */}
         <Marker
           position={{
-            lat: parseFloat(position.lat),
-            lng: parseFloat(position.lng),
+            lat: parseFloat(positions[positions.length - 1].lat),
+            lng: parseFloat(positions[positions.length - 1].lng),
           }}
           onClick={() => {
-            setSelected(position);
+            setSelected(positions[positions.length - 1]);
           }}
           icon={{
             url: marker, //getting a custom marker for iss
             scaledSize: new window.google.maps.Size(40, 40),
           }}
-          key={position.id}
         />
-      ))}
 
-      {/* if selected then the infoWindow will show */}
-      {selected && (
-        <InfoWindow
-          onCloseClick={() => {
-            setSelected(null);
-          }}
-          position={{
-            lat: parseFloat(selected.lat),
-            lng: parseFloat(selected.lng),
-          }}
-        >
-          {/* inside the infoWindow Historical data has been shown */}
-          <div>
-            <h1>ISS position details</h1>
-            <p>Lat: {selected.lat}</p>
-            <p>Lng: {selected.lng}</p>
-            <p>Speed is {selected.speed}/kmh</p>
-            <p>Time:{selected.timestamp} </p>
-          </div>
-        </InfoWindow>
-      )}
-    </GoogleMap>
-  ) : (
-    <> Loading.. </>
+        {/* if selected then the infoWindow will show */}
+        {selected && <InfoWindows />}
+      </GoogleMap>
+    </div>
   );
 };
 
