@@ -32,6 +32,7 @@ const Maps = () => {
         >
           {/* for markers */}
           <Marker
+            // because data is comming in DECS way.
             position={{
               lat: parseFloat(positions[0].lat),
               lng: parseFloat(positions[0].lng),
