@@ -18,7 +18,7 @@ const InfoWindows = () => {
       >
         {/* inside the infoWindow Historical data has been shown */}
         <div>
-          <h1>ISS position details</h1>
+          <h2>ISS position details</h2>
           <p>Lat: {selected.lat}</p>
           <p>Lng: {selected.lng}</p>
           <p>Speed is {selected.speed}/kmh</p>
