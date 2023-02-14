@@ -33,11 +33,11 @@ const Maps = () => {
           {/* for markers */}
           <Marker
             position={{
-              lat: parseFloat(positions[positions.length - 1].lat),
-              lng: parseFloat(positions[positions.length - 1].lng),
+              lat: parseFloat(positions[0].lat),
+              lng: parseFloat(positions[0].lng),
             }}
             onClick={() => {
-              setSelected(positions[positions.length - 1]);
+              setSelected(positions[0]);
             }}
             icon={{
               url: marker, //getting a custom marker for iss
