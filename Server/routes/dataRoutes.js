@@ -41,15 +41,18 @@ router.get("/data", async (req, res) => {
         res.status(500).json({ error: "Failed to insert data" });
       } else {
         //getting the api data from iss table in postgress
-        const data = pool.query("SELECT * FROM iss", (error, results) => {
-          if (error) {
-            console.log(error);
-            res.status(500).json({ message: "Error retrieving data" });
-          } else {
-            res.json(results.rows);
-            console.log(results.rows);
+        const data = pool.query(
+          "SELECT * FROM iss ORDER BY timestamp DESC LIMIT 200",
+          (error, results) => {
+            if (error) {
+              console.log(error);
+              res.status(500).json({ message: "Error retrieving data" });
+            } else {
+              res.json(results.rows);
+              console.log(results.rows);
+            }
           }
-        });
+        );
       }
     }
   );
